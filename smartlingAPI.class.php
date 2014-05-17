@@ -12,19 +12,22 @@ class SmartlingAPI
         $this->projectId = $projectId;
     }
  
-    public function uploadFile($path, $fileType, $fileUri, $charset = 'UTF-8') {
+    public function uploadFile($path, $fileType, $fileUri, $approved, $charset = 'UTF-8') {
         return $this->sendRequest('upload', array(
             'file' => '@' . $path . ';type=text/plain charset=' . $charset,
             'fileType' => $fileType,
-            'fileUri' => $fileUri
+            'fileUri' => $fileUri,
+            'approved' => $approved
         ));
     }
  
-    public function downloadFile($fileUri, $locale) {
-        return $this->sendRequest('get', array(
+    public function downloadFile($fileUri, $retrievalType, $locale, $fh) {
+        $params = array(
             'fileUri' => $fileUri,
+            'retrievalType' => $retrievalType,
             'locale' => $locale
-        ));
+        );
+        return $this->sendRequest('get', $params, $fh);
     }
  
     public function getStatus($fileUri, $locale) {
@@ -40,7 +43,7 @@ class SmartlingAPI
         ), $params));
     }
  
-    private function sendRequest($type, $params) {
+    private function sendRequest($type, $params, $fh = NULL) {
         $handler = curl_init();
         curl_setopt_array($handler, array(
             CURLOPT_URL            => $this->baseUrl . "/" . $type,
@@ -53,6 +56,10 @@ class SmartlingAPI
                 $params
             )
         ));
+
+        if(!is_null($fh)){
+            curl_setopt($handler, CURLOPT_FILE, $fh);
+        }
  
         $response = curl_exec($handler);
  

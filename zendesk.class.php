@@ -16,7 +16,7 @@ class Zendesk{
 	protected function getSmartlingMeta(){
 		$str = "# smartling.source_key_paths=" . ($this->_body_key + 1) . "," . ($this->_title_key + 1) . "\n";
 		$str .= "# smartling.paths=" . ($this->_body_val + 1) . "," . ($this->_title_val + 1) . "\n";		
-		$str .= "# smartling.string_format_paths=html:" . ($this->_body_key + 1) . ",html:" . ($this->_title_key + 1) . "\n";
+		$str .= "# smartling.string_format_paths=html:" . ($this->_body_val + 1) . ",html:" . ($this->_title_val + 1) . "\n";
 		return $str;
 	}
 
@@ -54,6 +54,7 @@ class Zendesk{
 		fputs($fw, $this->getSmartlingMeta());
 		$iterations = 0;
 		$source_type = lcfirst($source_type);
+		$page = NULL;
 
 		do{
 			if(!isset($page)){
@@ -64,7 +65,7 @@ class Zendesk{
 				return;
 			}
 			$data = $info['body'];
-			$page_count = $info->page_count;
+			$page_count = $data->page_count;
 			foreach($data->{$source_type} as $source){
 				$row = array();
 				$english = FALSE;

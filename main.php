@@ -9,6 +9,7 @@ $projects['es'] = array(
 define('ZENDESK_AUTH', 'tim@schoology.com/token:OpKrcNSGp3JYGxMf06SV2nbNT6FL2f5hXdOtnoeT');
 define('ZENDESK_ARTICLES_FILE_URI', 'zendesk_smartling_articles.csv');
 define('ZENDESK_SECTIONS_FILE_URI', 'zendesk_smartling_sections.csv');
+define('ZENDESK_CATEGORIES_FILE_URI', 'zendesk_smartling_categories.csv');
 
 $action = $argv[1];
 
@@ -19,6 +20,7 @@ if(!in_array($action, array('upload', 'download'))){
 $content_types = array();
 $content_types['articles'] = ZENDESK_ARTICLES_FILE_URI;
 $content_types['sections'] = ZENDESK_SECTIONS_FILE_URI;
+$content_types['categories'] = ZENDESK_CATEGORIES_FILE_URI;
 
 foreach($projects as $locale => $smartling_info){
 	$dir = $action . 's/' . $locale;

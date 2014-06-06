@@ -13,7 +13,6 @@ define('ZENDESK_CATEGORIES_FILE_URI', 'zendesk_smartling_categories.csv');
 
 $action = $argv[1];
 $application_path = $argv[2];
-echo $application_path;exit;
 
 if(!in_array($action, array('upload', 'download'))){
 	return;

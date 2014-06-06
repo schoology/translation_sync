@@ -12,6 +12,8 @@ define('ZENDESK_SECTIONS_FILE_URI', 'zendesk_smartling_sections.csv');
 define('ZENDESK_CATEGORIES_FILE_URI', 'zendesk_smartling_categories.csv');
 
 $action = $argv[1];
+$application_path = $argv[2];
+echo $application_path;exit;
 
 if(!in_array($action, array('upload', 'download'))){
 	return;
@@ -23,7 +25,7 @@ $content_types['sections'] = ZENDESK_SECTIONS_FILE_URI;
 $content_types['categories'] = ZENDESK_CATEGORIES_FILE_URI;
 
 foreach($projects as $locale => $smartling_info){
-	$dir = $action . 's/' . $locale;
+	$dir = $application_path . '/' . $action . 's/' . $locale;
 	if(!file_exists($dir)){
 		mkdir($dir, 0775);
 	}

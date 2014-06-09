@@ -27,16 +27,17 @@ class Zendesk{
 		curl_setopt($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 		curl_setopt($ch, CURLOPT_USERPWD, ZENDESK_AUTH);
+		curl_setopt($ch, CURLOPT_POST, FALSE);
 		$headers = array("Content-Type: application/json", "Accept: application/json");
 		
 		if(in_array($method, array('POST', 'PUT'))){
 			switch($method){
 				case 'POST':
-					$curl_options[ CURLOPT_POST ] = TRUE; 
-        			$curl_options[ CURLOPT_CUSTOMREQUEST ] = 'POST';
+					curl_setopt($ch, CURLOPT_POST, TRUE);
+					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
 					break;
 				case 'PUT':
-					$curl_options[ CURLOPT_CUSTOMREQUEST ] = 'PUT'; 
+					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 					break;
 			}
 			$body = json_encode($params);
@@ -111,10 +112,13 @@ class Zendesk{
 				'title' => $title_val,
 				'body' => $body_val
 			);
+
+			$sync_info = "Translation (" . $locale . ") for " . $source_type . " with ID " . $content_id . " and title '" . $title_val . "'";
+
 			// No translation exists - create it
 			if($info['http_code'] == 404){
-
-				$this->request('POST', "help_center/" . $source_type . "/" . $content_id . "/translations.json", $translation);
+				$info = $this->request('POST', "help_center/" . $source_type . "/" . $content_id . "/translations.json", $translation);
+				$sync_info_op = 'CREATING';
 			}
 			// Something weird happened
 			else if($info['http_code'] > 300){
@@ -122,8 +126,18 @@ class Zendesk{
 			}
 			// Update it
 			else{
-				$this->request('PUT', "help_center/" . $source_type . "/" . $content_id . "/translations/" . $locale . ".json", $translation);
-			}		
+				$info = $this->request('PUT', "help_center/" . $source_type . "/" . $content_id . "/translations/" . $locale . ".json", $translation);
+				$sync_info_op = 'UPDATING';
+			}	
+
+			// Logging	
+			if($info['http_code'] > 400){
+				echo "FAILED {$sync_info_op}: {$sync_info}\n";
+				echo "FAILURE INFO: status - " . $info['http_code'] . " error - " . $info['body']->error . " description - " . $info['body']->description . "\n"; 
+			}
+			else{
+				echo "SUCCESS {$sync_info_op}: {$sync_info}\n";	
+			}
 		}
 	}
 }

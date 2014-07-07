@@ -3,8 +3,11 @@ Smartling/Zendesk Translation Sync
 
 This application is a simple script that is intended to be run by a cron job. The application takes two possible directives - upload and download. 
   - **upload** will download the entirety of your Zendesk Help center and send it to all configured Smartling. Usage
+        
         php main.php upload /path/to/application/directory
+
   - **download** will download all Smartling translations and create or update translations in Zendesk. Usage
+        
         php main.php download /path/to/application/directory
 
 The intent of the application is to have a two way sync between the applications. Depending on the frequency of new content in your Zendesk help center and translations in Smartling, configure the two commands above in your crontab to run at an appropriate interval.

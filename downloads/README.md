@@ -1,0 +1,1 @@
+This folder is where .csv files downloaded from Smartling are held

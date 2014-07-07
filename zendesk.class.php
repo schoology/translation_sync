@@ -21,7 +21,7 @@ class Zendesk{
 	}
 
 	public function request($method, $resource, $params = array()){
-		$base_url = "https://schoology.zendesk.com/api/v2/";
+		$base_url = "https://" . ZENDESK_SUBDOMAIN . ".zendesk.com/api/v2/";
 		$url = $base_url . $resource;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,$url);

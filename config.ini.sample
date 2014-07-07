@@ -1,0 +1,15 @@
+; This file holds configurations necessary for the translation sync
+
+; Necessary info for Zendesk API Interactions - see more here http://developer.zendesk.com/documentation/rest_api/introduction.html 
+[zendesk]
+domain = "my_zendesk_subdomain"
+email = "mail@example.com"
+token = "zendesk_token"
+
+; This requires smartling projects to already be made - See here https://dashboard.smartling.com/settings/api about finding this information
+[smartling_languages]
+; For each language you want create a new config named the language code you want used with two key value pairs in the config
+; -project_key
+; -project_id
+es[project_key] = "smartling_project_key"
+es[project_id] = 1234567

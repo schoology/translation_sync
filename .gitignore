@@ -1,2 +1,5 @@
 uploads/*
 downloads/*
+!uploads/README.md
+!downloads/README.md
+config.ini

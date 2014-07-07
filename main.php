@@ -1,14 +1,12 @@
 <?php
 
-$projects = array();
-$projects['es'] = array(
-	'project_id' => 'b8b956733',
-	'project_key' => '2f535c60-bf14-47b4-9774-0e5464c09005'
-);
+$configs = parse_ini_file('config.ini', TRUE);
+$projects = $configs['smartling_languages'];
 	
 require_once 'zendesk.class.php';
 require_once 'smartlingAPI.class.php';
-define('ZENDESK_AUTH', 'tim@schoology.com/token:OpKrcNSGp3JYGxMf06SV2nbNT6FL2f5hXdOtnoeT');
+define('ZENDESK_AUTH', $configs['zendesk']['email'] . '/token:' . $configs['zendesk']['token']);
+define('ZENDESK_SUBDOMAIN', $configs['zendesk']['domain']);
 define('ZENDESK_ARTICLES_FILE_URI', 'zendesk_smartling_articles.csv');
 define('ZENDESK_SECTIONS_FILE_URI', 'zendesk_smartling_sections.csv');
 define('ZENDESK_CATEGORIES_FILE_URI', 'zendesk_smartling_categories.csv');
